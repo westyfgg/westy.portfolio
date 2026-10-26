@@ -1,0 +1,63 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#070914">
+    <meta name="description" content="{{ profile.display_name }} — personal links and contact">
+    <title>{{ profile.display_name }} · Links</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'links/site.css' %}">
+</head>
+<body>
+    <div class="backdrop" aria-hidden="true">
+        <span class="ambient-glow ambient-glow-one"></span>
+        <span class="ambient-glow ambient-glow-two"></span>
+        <span class="ambient-stars"></span>
+    </div>
+
+    <main class="profile-card">
+        <header class="profile-header">
+            <div class="avatar-frame">
+                <div class="avatar">
+                    {% if profile.avatar_url %}
+                        <img src="{{ profile.avatar_url }}" alt="{{ profile.display_name }} profile picture">
+                    {% else %}
+                        <span aria-hidden="true">W</span>
+                    {% endif %}
+                </div>
+            </div>
+            <p class="username">{{ profile.username }}</p>
+            <p class="profile-caption">PERSONAL LINKS <span aria-hidden="true">·</span> DIGITAL CREATOR</p>
+            {% if profile.quote %}<blockquote class="quote">{{ profile.quote }}</blockquote>{% endif %}
+        </header>
+
+        <nav class="link-list" aria-label="Social links">
+            {% for link in links %}
+                {% if link.url %}
+                    <a class="link-button" href="{{ link.url }}" target="_blank" rel="noopener noreferrer">
+                        <span class="link-icon" aria-hidden="true">
+                            {% include "links/_link_icon.html" %}
+                        </span>
+                        <span class="link-title">{{ link.title }}</span>
+                        <span class="link-arrow" aria-hidden="true">↗</span>
+                    </a>
+                {% else %}
+                    <span class="link-button link-disabled" aria-disabled="true">
+                        <span class="link-icon" aria-hidden="true">{% include "links/_link_icon.html" %}</span>
+                        <span class="link-title">{{ link.title }}</span>
+                        <span class="link-arrow" aria-hidden="true">↗</span>
+                    </span>
+                {% endif %}
+            {% empty %}
+                <p class="empty-links">Add your links in the admin panel.</p>
+            {% endfor %}
+        </nav>
+
+        <footer class="footer">© 2026 {{ profile.display_name }}</footer>
+    </main>
+</body>
+</html>
